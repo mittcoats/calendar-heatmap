@@ -5,7 +5,7 @@ function calendarHeatmap() {
   var height = 110;
   var legendWidth = 150;
   var selector = 'body';
-  var SQUARE_LENGTH = 11;
+  var SQUARE_LENGTH = 12;
   var SQUARE_PADDING = 2;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
