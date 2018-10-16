@@ -140,7 +140,9 @@ function calendarHeatmap() {
         .attr('class', 'day-cell')
         .attr('width', SQUARE_WIDTH)
         .attr('height', SQUARE_HEIGHT) 
-        .attr('fill', function(d) { return ((medGap(d) ? chart.colorRange()[0] : chart.colorRange()[1])) })
+        .attr('fill', function(d) { 
+          return ((medGap(d) ? chart.colorRange()[0] : chart.colorRange()[1])) 
+        })
         .attr('x', function (d, i) {
           return i * (SQUARE_WIDTH + SQUARE_PADDING);
         })

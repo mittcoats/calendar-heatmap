@@ -12,11 +12,13 @@ function calendarHeatmap() {
   var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
   var startDate = null;
   var counterMap= {};
+  var gapMap = {};
   var data = [];
   var max = null;
   var colorRange = ['#D8E6E7', '#218380'];
+  var gapColor= '#cc0000'
   var tooltipEnabled = true;
-  var tooltipUnit = 'contribution';
+  var tooltipUnit = 'pill';
   var legendEnabled = true;
   var onClick = null;
   var weekStart = 0; //0 for Sunday, 1 for Monday
@@ -26,7 +28,9 @@ function calendarHeatmap() {
     No: 'No',
     on: 'on',
     Less: 'Less',
-    More: 'More'
+    More: 'More',
+    Gap: 'Gap',
+    Covered: 'Covered'
   };
   var v = Number(d3.version.split('.')[0]);
 
@@ -35,12 +39,14 @@ function calendarHeatmap() {
     if (!arguments.length) { return data; }
     data = value;
 
-    counterMap= {};
+    counterMap = {};
+    gapMap = {};
 
     data.forEach(function (element, index) {
         var key= moment(element.date).format( 'YYYY-MM-DD' );
         var counter= counterMap[key] || 0;
         counterMap[key]= counter + element.count;
+        gapMap[key]= element.gap 
     });
 
     return chart;
@@ -143,7 +149,10 @@ function calendarHeatmap() {
         .attr('class', 'day-cell')
         .attr('width', SQUARE_LENGTH)
         .attr('height', SQUARE_LENGTH)
-        .attr('fill', function(d) { return color(countForDate(d)); })
+        .attr('fill', function(d) {
+          console.log(gapColor); 
+          return (medGap(d) ? gapColor : color(countForDate(d))) 
+        })
         .attr('x', function (d, i) {
           var cellDate = moment(d);
           var result = cellDate.week() - firstDate.week() + (firstDate.weeksInYear() * (cellDate.weekYear() - firstDate.weekYear()));
@@ -264,6 +273,11 @@ function calendarHeatmap() {
     function countForDate(d) {
         var key= moment(d).format( 'YYYY-MM-DD' );
         return counterMap[key] || 0;
+    }
+
+     function medGap(d) {
+      var key= moment(d).format( 'YYYY-MM-DD' );
+      return gapMap[key]
     }
 
     function formatWeekday(weekDay) {

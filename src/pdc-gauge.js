@@ -2,7 +2,7 @@ function pdcGauge() {
   // defaults
   var w = 500, h = 400;
   var outerRadius = (w / 2) - 10;
-  var innerRadius = (w / 2) - 35;
+  var innerRadius = (w / 2) - 45;
 
   var color = ['#cc0000', '#37baab'];
   var selector = 'body';

@@ -4,32 +4,128 @@
   <meta charset="utf-8">
   <title>D3.js v4 Calendar Heatmap</title>
   <link rel="stylesheet" type="text/css" href="../src/calendar-heatmap.css">
+  <link rel="stylesheet" type="text/css" href="../src/pdc-gauge.css">
+  <link rel="stylesheet" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+    crossorigin="anonymous">
 </head>
 
 <body>
-  <div class="container"></div>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-sm-10">
+        <h3>Mitt Coats</h3>
+        <h1 class="display-3">Medication Review</h1>
+      </div>
+      <div class="col-sm-2 d-flex flex-column justify-content-start align-items-end">
+        <p class="font-weight-bold">Report Date</p>
+        <p class="">15 Oct 2018</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <p class="font-weight-bold">Atorvastatin</p>
+        <p class="">Rx: 12345678</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="font-weight-bold">40 mg</p>
+        <p class="">TIC TAC</p>
+        
+      </div>
+      <div class="col-sm-3">
+        <p class="font-weight-bold">1 Oral</p>
+        <p class="">Prescriber: LIBERZON</p>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <p class="font-weight-bold">Prescribed Date</p>
+        <p class="">06 Jul 2018</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="font-weight-bold">Last Fill Date</p>
+        <p class="">15 Sep 2018</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="font-weight-bold">Next Fill Date</p>
+        <p class="">16 Oct 2018</p>
+      </div>
+      <div class="col-sm-3">
+        <p class="font-weight-bold">Expiration Date</p>
+        <p class="">30 Jun 2019</p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="container">
+    <div id="gauge" class="d-block m-auto"></div>
+    <div id="calendar"></div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
   <script src="../src/calendar-heatmap.js"></script>
+  <script src="../src/pdc-gauge.js"></script>
   <script type="text/javascript">
     var now = moment().endOf('day').toDate();
     var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
+    
+    var fillSize = 30;
+    var coveredCount = 30;
+    var gapCount = Math.floor(Math.random()*5);
+    var gapTotal = 0;
+    
     var chartData = d3.timeDays(yearAgo, now).map(function (dateElement) {
+
+      var gap;
+      var coveredCount;
+      if (this.gapCount > 0) {
+        this.gapCount--;
+        gap = true;
+      } else if(this.coveredCount > 0){
+        this.gapCount = 0;
+        this.coveredCount--;
+        gap = false;
+      } else {
+        this.gapCount = Math.floor(Math.random() * 20);
+        this.gapTotal += this.gapCount;
+        this.coveredCount = 30;
+        gap = true;
+      }
+
+      if(gap ? coveredCount = 0 : coveredCount = this.coveredCount);
+
       return {
         date: dateElement,
-        count: (dateElement.getDay() !== 0 && dateElement.getDay() !== 6) ? Math.floor(Math.random() * 60) : Math.floor(Math.random() * 10)
+        count: coveredCount,
+        gap: gap
+      };
+
+      return {
+        date: dateElement,
+        // count: (dateElement.getDay() !== 0 && dateElement.getDay() !== 6) ? Math.floor(Math.random() * 60) : Math.floor(Math.random() * 10),
+        count: coveredCount,
+        gap: gap
+        
       };
     });
 
+    var pdc = (365 - gapTotal) / 365;
+
     var heatmap = calendarHeatmap()
       .data(chartData)
-      .selector('.container')
+      .selector('#calendar')
       .tooltipEnabled(true)
-      .colorRange(['#f4f7f7', '#79a8a9'])
+      .colorRange(['#ebf9f8', '#37baab'])
       .onClick(function (data) {
         console.log('data', data);
       });
     heatmap();  // render the chart
+
+     var gauge = pdcGauge()
+      .pdc(pdc)
+      .selector('#gauge');
+    gauge();
   </script>
 </body>
 
