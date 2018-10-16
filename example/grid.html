@@ -31,12 +31,11 @@
       <div class="col-sm-3">
         <p class="font-weight-bold">40 mg</p>
         <p class="">TIC TAC</p>
-        
       </div>
       <div class="col-sm-3">
         <p class="font-weight-bold">1 Oral</p>
         <p class="">Prescriber: LIBERZON</p>
-        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-3">
@@ -71,43 +70,43 @@
     var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
     
     var fillSize = 30;
-    var coveredCount = 30;
+    var coveredCount = this.fillSize;
     var gapCount = Math.floor(Math.random()*5);
     var gapTotal = 0;
+    var gapDays = 0;
     
     var chartData = d3.timeDays(yearAgo, now).map(function (dateElement) {
 
       var gap;
       var coveredCount;
+
       if (this.gapCount > 0) {
         this.gapCount--;
+        this.gapDays++;
         gap = true;
-      } else if(this.coveredCount > 0){
-        this.gapCount = 0;
+      } else if (this.coveredCount > 0){
         this.coveredCount--;
+        this.gapCount = 0;
+        this.gapDays = 0;
         gap = false;
       } else {
-        this.gapCount = Math.floor(Math.random() * 20);
+        this.gapCount = Math.floor(Math.random() * 30);
         this.gapTotal += this.gapCount;
-        this.coveredCount = 30;
+        this.coveredCount = this.fillSize;
         gap = true;
       }
 
       if(gap ? coveredCount = 0 : coveredCount = this.coveredCount);
-
-      return {
-        date: dateElement,
-        count: coveredCount,
-        gap: gap
-      };
-
-      return {
-        date: dateElement,
-        // count: (dateElement.getDay() !== 0 && dateElement.getDay() !== 6) ? Math.floor(Math.random() * 60) : Math.floor(Math.random() * 10),
-        count: coveredCount,
-        gap: gap
         
+      return {
+        date: dateElement,
+        count: coveredCount,
+        gap: gap,
+        gapCount: this.gapDays
       };
+
+        // count: (dateElement.getDay() !== 0 && dateElement.getDay() !== 6) ? Math.floor(Math.random() * 60) : Math.floor(Math.random() * 10),
+        
     });
 
     var pdc = (365 - gapTotal) / 365;

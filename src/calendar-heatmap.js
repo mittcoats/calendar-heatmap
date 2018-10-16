@@ -2,10 +2,10 @@
 function calendarHeatmap() {
   // defaults
   var width = 950;
-  var height = 110;
-  var legendWidth = 150;
+  var height = 150;
+  var legendWidth = 400;
   var selector = 'body';
-  var SQUARE_LENGTH = 12;
+  var SQUARE_LENGTH = 15;
   var SQUARE_PADDING = 2;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
@@ -13,10 +13,13 @@ function calendarHeatmap() {
   var startDate = null;
   var counterMap= {};
   var gapMap = {};
+  var gapCounterMap = {};
   var data = [];
   var max = null;
   var colorRange = ['#D8E6E7', '#218380'];
-  var gapColor= '#cc0000'
+  var coveredColor = "#37baab";
+  var gapColorRange= ['#ffe6e6', '#cc0000'];
+  var gapColor = "#cc0000";
   var tooltipEnabled = true;
   var tooltipUnit = 'pill';
   var legendEnabled = true;
@@ -41,12 +44,14 @@ function calendarHeatmap() {
 
     counterMap = {};
     gapMap = {};
+    gapCounterMap = {};
 
     data.forEach(function (element, index) {
         var key= moment(element.date).format( 'YYYY-MM-DD' );
         var counter= counterMap[key] || 0;
         counterMap[key]= counter + element.count;
         gapMap[key]= element.gap 
+        gapCounterMap[key]= element.gapCount
     });
 
     return chart;
@@ -74,6 +79,12 @@ function calendarHeatmap() {
   chart.colorRange = function (value) {
     if (!arguments.length) { return colorRange; }
     colorRange = value;
+    return chart;
+  };
+
+  chart.gapColorRange = function (value) {
+    if (!arguments.length) { return gapColorRange; }
+    gapColorRange = value;
     return chart;
   };
 
@@ -121,17 +132,18 @@ function calendarHeatmap() {
     }
 
     // color range
-    var color = ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
+    var getColor = ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
       .range(chart.colorRange())
+      .domain([0, max]);
+
+    var getGapColor =  ((d3.scale && d3.scale.linear) || d3.scaleLinear)()
+      .range(chart.gapColorRange())
       .domain([0, max]);
 
     var tooltip;
     var dayRects;
 
     drawChart();
-
-    // console.log(dateRange);
-    // console.log(monthRange);
 
     function drawChart() {
       var svg = d3.select(chart.selector())
@@ -149,14 +161,12 @@ function calendarHeatmap() {
         .attr('class', 'day-cell')
         .attr('width', SQUARE_LENGTH)
         .attr('height', SQUARE_LENGTH)
-        .attr('fill', function(d) {
-          console.log(gapColor); 
-          return (medGap(d) ? gapColor : color(countForDate(d))) 
+        .attr('fill', function(d,i) {
+          return (medGap(d) ? getGapColor(gapCountForDate(d)) : getColor(countForDate(d)))
         })
         .attr('x', function (d, i) {
           var cellDate = moment(d);
           var result = cellDate.week() - firstDate.week() + (firstDate.weeksInYear() * (cellDate.weekYear() - firstDate.weekYear()));
-          // console.log("enterSelection", result);
           return result * (SQUARE_LENGTH + SQUARE_PADDING);
         })
         .attr('y', function (d, i) {
@@ -187,10 +197,36 @@ function calendarHeatmap() {
       }
 
       if (chart.legendEnabled()) {
-        var colorRange = [color(0)];
+        var colorRange = [getColor(0)];
+        var gapColorRange = [getGapColor(0)];
         for (var i = 3; i > 0; i--) {
-          colorRange.push(color(max / i));
+          colorRange.push(getColor(max / i));
+          gapColorRange.push(getGapColor(max / i));
         }
+
+        var gapLegendGroup = svg.append('g');
+        gapLegendGroup.selectAll('.calendar-heatmap-legend')
+            .data(gapColorRange)
+            .enter()
+          .append('rect')
+            .attr('class', 'calendar-heatmap-legend')
+            .attr('width', SQUARE_LENGTH)
+            .attr('height', SQUARE_LENGTH)
+            .attr('x', function (d, i) { return (width - legendWidth/2) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
+            .attr('y', height + SQUARE_PADDING)
+            .attr('fill', function (d) { return d; });
+
+        gapLegendGroup.append('text')
+          .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
+          .attr('x', width - legendWidth/2 - SQUARE_LENGTH)
+          .attr('y', height + SQUARE_LENGTH)
+          .text(locale.Less);
+
+        gapLegendGroup.append('text')
+          .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
+          .attr('x', (width - legendWidth/2 + SQUARE_LENGTH) + (gapColorRange.length + 1) * SQUARE_LENGTH)
+          .attr('y', height + SQUARE_LENGTH)
+          .text(locale.More + ' ' + 'Gaps');
 
         var legendGroup = svg.append('g');
         legendGroup.selectAll('.calendar-heatmap-legend')
@@ -200,22 +236,24 @@ function calendarHeatmap() {
             .attr('class', 'calendar-heatmap-legend')
             .attr('width', SQUARE_LENGTH)
             .attr('height', SQUARE_LENGTH)
-            .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * 13; })
+            .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
             .attr('y', height + SQUARE_PADDING)
             .attr('fill', function (d) { return d; });
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
-          .attr('x', width - legendWidth - 13)
+          .attr('x', width - legendWidth - SQUARE_LENGTH)
           .attr('y', height + SQUARE_LENGTH)
           .text(locale.Less);
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
-          .attr('x', (width - legendWidth + SQUARE_PADDING) + (colorRange.length + 1) * 13)
+          .attr('x', (width - legendWidth + SQUARE_LENGTH) + (colorRange.length + 1) * SQUARE_LENGTH)
           .attr('y', height + SQUARE_LENGTH)
-          .text(locale.More);
+          .text(locale.More + ' ' + 'Doses');
       }
+
+      
 
       dayRects.exit().remove();
       var monthLabels = svg.selectAll('.month')
@@ -273,6 +311,11 @@ function calendarHeatmap() {
     function countForDate(d) {
         var key= moment(d).format( 'YYYY-MM-DD' );
         return counterMap[key] || 0;
+    }
+
+    function gapCountForDate(d) {
+        var key= moment(d).format( 'YYYY-MM-DD' );
+        return gapCounterMap[key] || 0;
     }
 
      function medGap(d) {
