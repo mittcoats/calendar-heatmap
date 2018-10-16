@@ -89,6 +89,7 @@
     "d3",
     "moment", // moment.js
     "$", // jQuery
-    "calendarHeatmap"
+    "calendarHeatmap",
+    "pdcGauge"
   ]
 }

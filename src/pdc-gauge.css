@@ -1,0 +1,11 @@
+svg {
+  display: block;
+  margin: auto;
+}
+
+.pdc-gauge {
+  position: relative;
+  padding: 1rem;
+  display: block;
+  margin: auto;
+}
