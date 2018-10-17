@@ -3,9 +3,8 @@ svg {
   margin: auto;
 }
 
-.pdc-gauge {
+#gauge {
   position: relative;
   padding: 1rem;
-  display: block;
-  margin: auto;
+  height: 300px;
 }

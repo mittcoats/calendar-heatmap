@@ -1,6 +1,6 @@
 function pdcGauge() {
   // defaults
-  var w = 500, h = 400;
+  var w = 500, h = 500;
   var outerRadius = (w / 2) - 10;
   var innerRadius = (w / 2) - 45;
 
@@ -57,7 +57,7 @@ function pdcGauge() {
         .attr('height', h)
         .append('g')
         .attr('class', 'pdc-gauge')
-        .attr("transform", 'translate(' + w / 2 + ',' + h / 1.5  + ')');
+        .attr('transform', 'translate(' + w / 2 + ',' + h / 2  + ')');
         ;
 
       var path = svg.append('path')

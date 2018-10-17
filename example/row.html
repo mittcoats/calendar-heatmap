@@ -59,8 +59,11 @@
   </div>
   <hr>
   <div class="container">
-    <div class="gauge m-auto"></div>
-    <div class="chart"></div>
+    <div id="gauge" class="d-block m-auto"></div>
+    <div class="row">
+      <p>You missed {{this.now}}</p>
+    </div>
+    <div id="calendar"></div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js" charset="utf-8"></script>
@@ -104,7 +107,7 @@
 
     var heatmap = calendarHeatmap()
       .data(chartData)
-      .selector('.chart')
+      .selector('#calendar')
       .tooltipEnabled(true)
       .colorRange(['#cc0000', '#37baab'])
       .onClick(function (data) {
@@ -115,7 +118,7 @@
 
     var gauge = pdcGauge()
       .pdc(pdc)
-      .selector('.gauge');
+      .selector('#gauge');
     gauge();
 
   </script>

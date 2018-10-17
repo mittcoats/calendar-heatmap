@@ -1,11 +1,11 @@
 
 function calendarHeatmap() {
   // defaults
-  var width = 950;
+  var width = 1000;
   var height = 150;
-  var legendWidth = 400;
+  var legendWidth = 200;
   var selector = 'body';
-  var SQUARE_LENGTH = 15;
+  var SQUARE_LENGTH = 17;
   var SQUARE_PADDING = 2;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
@@ -149,20 +149,23 @@ function calendarHeatmap() {
       var svg = d3.select(chart.selector())
         .style('position', 'relative')
         .append('svg')
-        .attr('width', width)
         .attr('class', 'calendar-heatmap')
+        .attr('width', width)
         .attr('height', height)
         .style('padding', '36px');
 
-      dayRects = svg.selectAll('.day-cell')
+      dayRects = svg.append('g').selectAll('.day-cell')
         .data(dateRange);  //  array of days for the last yr
 
-      var enterSelection = dayRects.enter().append('rect')
+      var enterSelection = dayRects
+        .enter()
+        .append('rect')
         .attr('class', 'day-cell')
         .attr('width', SQUARE_LENGTH)
         .attr('height', SQUARE_LENGTH)
         .attr('fill', function(d,i) {
-          return (medGap(d) ? getGapColor(gapCountForDate(d)) : getColor(countForDate(d)))
+          // return (medGap(d) ? getGapColor(gapCountForDate(d)) : getColor(countForDate(d)))
+          return (medGap(d) ? gapColor : coveredColor)
         })
         .attr('x', function (d, i) {
           var cellDate = moment(d);
@@ -205,58 +208,41 @@ function calendarHeatmap() {
         }
 
         var gapLegendGroup = svg.append('g');
-        gapLegendGroup.selectAll('.calendar-heatmap-legend')
-            .data(gapColorRange)
-            .enter()
-          .append('rect')
-            .attr('class', 'calendar-heatmap-legend')
-            .attr('width', SQUARE_LENGTH)
-            .attr('height', SQUARE_LENGTH)
-            .attr('x', function (d, i) { return (width - legendWidth/2) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
-            .attr('y', height + SQUARE_PADDING)
-            .attr('fill', function (d) { return d; });
-
-        gapLegendGroup.append('text')
-          .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
-          .attr('x', width - legendWidth/2 - SQUARE_LENGTH)
-          .attr('y', height + SQUARE_LENGTH)
-          .text(locale.Less);
+        gapLegendGroup.append('rect')
+          .attr('class', 'calendar-heatmap-legend')
+          .attr('width', SQUARE_LENGTH)
+          .attr('height', SQUARE_LENGTH)
+          .attr('x', width - legendWidth/2)
+          .attr('y', height + SQUARE_PADDING)
+          .attr('fill', function (d) { return gapColor; });
 
         gapLegendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
-          .attr('x', (width - legendWidth/2 + SQUARE_LENGTH) + (gapColorRange.length + 1) * SQUARE_LENGTH)
+          .attr('x', width - legendWidth/2 + SQUARE_LENGTH + SQUARE_PADDING * 2)
           .attr('y', height + SQUARE_LENGTH)
-          .text(locale.More + ' ' + 'Gaps');
+          .text('Gap');
+
 
         var legendGroup = svg.append('g');
-        legendGroup.selectAll('.calendar-heatmap-legend')
-            .data(colorRange)
-            .enter()
-          .append('rect')
-            .attr('class', 'calendar-heatmap-legend')
-            .attr('width', SQUARE_LENGTH)
-            .attr('height', SQUARE_LENGTH)
-            .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * (SQUARE_LENGTH + SQUARE_PADDING); })
-            .attr('y', height + SQUARE_PADDING)
-            .attr('fill', function (d) { return d; });
-
-        legendGroup.append('text')
-          .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
-          .attr('x', width - legendWidth - SQUARE_LENGTH)
-          .attr('y', height + SQUARE_LENGTH)
-          .text(locale.Less);
+        legendGroup.append('rect')
+          .attr('class', 'calendar-heatmap-legend')
+          .attr('width', SQUARE_LENGTH)
+          .attr('height', SQUARE_LENGTH)
+          .attr('x', width - legendWidth)
+          .attr('y', height + SQUARE_PADDING)
+          .attr('fill', coveredColor);
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
-          .attr('x', (width - legendWidth + SQUARE_LENGTH) + (colorRange.length + 1) * SQUARE_LENGTH)
+          .attr('x', (width - legendWidth + SQUARE_LENGTH + SQUARE_PADDING*2))
           .attr('y', height + SQUARE_LENGTH)
-          .text(locale.More + ' ' + 'Doses');
+          .text('Covered');
       }
 
       
 
       dayRects.exit().remove();
-      var monthLabels = svg.selectAll('.month')
+      var monthLabels = svg.append('g').selectAll('.month')
           .data(monthRange)
           .enter().append('text')
           .attr('class', 'month-name')
