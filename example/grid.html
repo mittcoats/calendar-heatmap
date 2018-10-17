@@ -15,52 +15,127 @@
   <div class="container">
     <div class="row mt-5">
       <div class="col-sm-10">
-        <h3>Mitt Coats</h3>
+        <h3>Anna Proust</h3>
         <h1 class="display-3">Medication Review</h1>
       </div>
       <div class="col-sm-2 d-flex flex-column justify-content-start align-items-end">
-        <p class="font-weight-bold">Report Date</p>
+        <p class="font-weight-bold mb-0">Report Date</p>
         <p class="">15 Oct 2018</p>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <p class="font-weight-bold">Atorvastatin</p>
+        <p class="font-weight-bold mb-0">Atorvastatin</p>
         <p class="">Rx: 12345678</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold">40 mg</p>
+        <p class="font-weight-bold mb-0">40 mg</p>
         <p class="">TIC TAC</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold">1 Oral</p>
+        <p class="font-weight-bold mb-0">1 Oral</p>
         <p class="">Prescriber: LIBERZON</p>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <p class="font-weight-bold">Prescribed Date</p>
+        <p class="font-weight-bold mb-0">Prescribed Date</p>
         <p class="">06 Jul 2018</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold">Last Fill Date</p>
+        <p class="font-weight-bold mb-0">Last Fill Date</p>
         <p class="">15 Sep 2018</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold">Next Fill Date</p>
+        <p class="font-weight-bold mb-0">Next Fill Date</p>
         <p class="">16 Oct 2018</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold">Expiration Date</p>
+        <p class="font-weight-bold mb-0">Expiration Date</p>
         <p class="">30 Jun 2019</p>
       </div>
     </div>
   </div>
   <hr>
   <div class="container mb-5">
-    <div id="gauge" class="d-block m-auto"></div>
-    <div id="calendar"></div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="display-4">Portion of Days Covered</h3>
+        <div id="gauge" class="d-block m-auto"></div> 
+        <p class="text-center d-block m-auto">
+        Our records indicate that you are getting {{ <strong>pdc</strong> }} of your prescribed medicine.
+        </p>
+      <!--</div>  
+    </div>
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>Calendar of Days Covered</h3>-->
+        <div id="calendar"></div>
+        <p class="d-block m-auto">
+          This calendar displays the last 365 days. Green means you were covered that day with your medication. Red means you had a gap. 
+          <br>Our records show that you missed {{ <strong>gapCount</strong> }} doses in the last 12 months. 
+          Doctors suggest you get at least 80% of the medicine prescribed for optimal treatment effect.
+        </p>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-12">  
+        <h3 class="display-4">Common issues and solutions</h3>
+        <p class="d-block mb-5">
+          Many reasons arise that influence how you take your medicine. The areas below are the most common problems and associated solutions.
+          Talk with your pharmacist and physician to find the best personalized treatment plan.
+        </p>
+        <div class="row">
+          <div class="col-sm-3">
+            <h4>Forgetfulness</h4>
+            <p>It's easy to forget and get behind, especially with medications without noticeable effects.</p>
+            <div class="ml-2">
+              <h5>Services</h5>
+              <ul class="list-group">
+                <li class="list-group-item border-0 p-1">Delivery</li>
+                <li class="list-group-item border-0 p-1">ReadyFill</li>
+                <li class="list-group-item border-0 p-1">Text Messaging</li>
+                <li class="list-group-item border-0 p-1">90 Day Supply</li>
+                <li class="list-group-item border-0 p-1">Script Sync</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <h4>Cost</h4>
+            <p>Medications are expensive and often may have complicated pricing.</p>
+            <div class="ml-2">
+              <h5>Services</h5>
+              <p>Saving Patients Money</p>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <h4>Side Effects</h4>
+            <p>Most medications have side effects, which can make it difficult to continue therapy.</p>
+            <div class="ml-2">
+              <h5>Services</h5>
+              <p>Talk with your pharmacist or doctor about managing side effects or finding a different drug.</p>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <h4>Understanding</h4>
+            <p>Many medications are complex and take a long time to have a significant impact.</p>
+            <div class="ml-2">
+              <h5>Services</h5>
+              <p>Talk with your pharmacist to learn more about your treatments</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+  <hr>
+  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
   <script src="../src/calendar-heatmap.js"></script>
