@@ -29,3 +29,17 @@ rect.day-cell:hover {
   margin: auto;
   padding: 1rem 0;
 }
+
+.issues {
+  color: #cc0000;
+}
+
+.solutions {
+  color: #37baab;
+}
+
+.optimal-text {
+  position: absolute;
+  top: 33%;
+  right: 20%;
+}

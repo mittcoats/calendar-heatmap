@@ -1,8 +1,9 @@
 function pdcGauge() {
   // defaults
-  var w = 500, h = 500;
+  var w = 450, h = 450;
   var outerRadius = (w / 2) - 10;
   var innerRadius = (w / 2) - 45;
+  var optimalPDC = 0.80
 
   var color = ['#cc0000', '#37baab'];
   var selector = 'body';
@@ -31,7 +32,8 @@ function pdcGauge() {
     d3.select(gauge.selector()).selectAll('svg.gauge').remove();
 
     var ratio = pdc;
-    var piePercent = Math.PI * ratio;
+    var piPercent = Math.PI * ratio;
+    var optimalPiPercent = Math.PI * optimalPDC;
 
     // Draw Gauge
     drawGauge();
@@ -49,7 +51,13 @@ function pdcGauge() {
         .innerRadius(innerRadius)
         .outerRadius(outerRadius)
         .startAngle(0)
-        .endAngle(piePercent);
+        .endAngle(piPercent);
+
+      var optimalLine = d3.arc()
+        .innerRadius(innerRadius-10)
+        .outerRadius(outerRadius+15)
+        .startAngle(optimalPiPercent+.02)
+        .endAngle(optimalPiPercent);
 
       var svg = d3.select(gauge.selector())
         .append('svg')
@@ -70,10 +78,19 @@ function pdcGauge() {
         .attr("transform", 'rotate(-90)')
         .attr("fill", color[1]);
 
+      var path3 = svg.append('path')
+        .attr("d", optimalLine)
+        .attr("transform", 'rotate(-90)')
+        .attr("fill", 'black');
+
       var middleCount = svg.append('text')
         .text(Math.round(pdc*100) + "%")
         .attr('class', 'display-1')
-        .attr('text-anchor', 'middle')
+        .attr('text-anchor', 'middle');
+
+      // var optimalText = svg.append('text')
+      //   .text("Optimal is >80%")
+      //   .attr('transform', 'translate(' + 140 + ',' + -180 + ')');
     }
   };
 

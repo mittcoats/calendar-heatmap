@@ -14,13 +14,17 @@
 <body>
   <div class="container">
     <div class="row mt-5">
-      <div class="col-sm-10">
-        <h3>Anna Proust</h3>
-        <h1 class="display-3">Medication Review</h1>
+      <div class="col-sm-12">
+        <h3 class="d-inline-block">Anna Proust</h3>
+        <div class="float-right">
+          <p class="font-weight-bold mb-0">Report Date</p>
+          <p class="">15 Oct 2018</p>
+        </div>
       </div>
-      <div class="col-sm-2 d-flex flex-column justify-content-start align-items-end">
-        <p class="font-weight-bold mb-0">Report Date</p>
-        <p class="">15 Oct 2018</p>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h1 class="display-4">Medication Review</h1>
       </div>
     </div>
     <div class="row">
@@ -39,15 +43,15 @@
     </div>
     <div class="row">
       <div class="col-sm-3">
-        <p class="font-weight-bold mb-0">Prescribed Date</p>
+        <p class="font-weight-bold mb-0">First Pickup Date</p>
         <p class="">06 Jul 2018</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold mb-0">Last Fill Date</p>
+        <p class="font-weight-bold mb-0">Last Pickup Date</p>
         <p class="">15 Sep 2018</p>
       </div>
       <div class="col-sm-3">
-        <p class="font-weight-bold mb-0">Next Fill Date</p>
+        <p class="font-weight-bold mb-0">Next Pickup Date</p>
         <p class="">16 Oct 2018</p>
       </div>
       <div class="col-sm-3">
@@ -60,23 +64,22 @@
   <div class="container mb-5">
     <div class="row">
       <div class="col-sm-12">
-        <h3 class="display-4">Portion of Days Covered</h3>
-        <div id="gauge" class="d-block m-auto"></div> 
         <p class="text-center d-block m-auto">
-        Our records indicate that you are getting {{ <strong>pdc</strong> }} of your prescribed medicine.
+          Our records indicate that you are getting {{ <strong>pdc</strong> }} of your prescribed medicine.
         </p>
-      <!--</div>  
+        <p class="optimal-text">
+          >80% is optimal
+        </p>
+        <div id="gauge" class="d-block m-auto"></div>
+      </div>  
     </div>
-    <hr>
-
     <div class="row">
       <div class="col-sm-12">
-        <h3>Calendar of Days Covered</h3>-->
         <div id="calendar"></div>
-        <p class="d-block m-auto">
-          This calendar displays the last 365 days. Green means you were covered that day with your medication. Red means you had a gap. 
-          <br>Our records show that you missed {{ <strong>gapCount</strong> }} doses in the last 12 months. 
-          Doctors suggest you get at least 80% of the medicine prescribed for optimal treatment effect.
+        <p class="d-block m-auto text-center">
+          Our records show that you missed {{ <strong>gapCount</strong> }} doses in the last 12 months. 
+          <br>
+          Doctors and pharmacists suggest you get at least 80% of the medicine prescribed for optimal treatment effect.
         </p>
       </div>
     </div>
@@ -91,41 +94,51 @@
         </p>
         <div class="row">
           <div class="col-sm-3">
-            <h4>Forgetfulness</h4>
-            <p>It's easy to forget and get behind, especially with medications without noticeable effects.</p>
-            <div class="ml-2">
-              <h5>Services</h5>
+            <h3 class="issues">Forgetfulness</h3>
+            <p>It's easy to forget and get behind, especially with your medications.</p>
+          </div>
+          <div class="col-sm-3">
+            <h3 class="issues">Cost</h3>
+            <p>Medications are expensive and often may have complicated pricing.</p>
+          </div>
+          <div class="col-sm-3">
+            <h3 class="issues">Side Effects</h3>
+            <p>Most medications have side effects, which can make it difficult to continue therapy.</p>
+          </div>
+          <div class="col-sm-3">
+            <h3 class="issues">Understanding</h3>
+            <p>Many medications are complex and take a long time to have a significant impact.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="">
+              <h5 class="solutions">Solutions</h5>
               <ul class="list-group">
-                <li class="list-group-item border-0 p-1">Delivery</li>
-                <li class="list-group-item border-0 p-1">ReadyFill</li>
-                <li class="list-group-item border-0 p-1">Text Messaging</li>
-                <li class="list-group-item border-0 p-1">90 Day Supply</li>
-                <li class="list-group-item border-0 p-1">Script Sync</li>
+                <li class="list-group-item border-0 p-0">Delivery</li>
+                <li class="list-group-item border-0 p-0">ReadyFill</li>
+                <li class="list-group-item border-0 p-0">Text Messaging</li>
+                <li class="list-group-item border-0 p-0">90 Day Supply</li>
+                <li class="list-group-item border-0 p-0">Script Sync</li>
               </ul>
             </div>
           </div>
           <div class="col-sm-3">
-            <h4>Cost</h4>
-            <p>Medications are expensive and often may have complicated pricing.</p>
-            <div class="ml-2">
-              <h5>Services</h5>
+            <div class="">
+              <h5 class="solutions">Solutions</h5>
               <p>Saving Patients Money</p>
             </div>
           </div>
           <div class="col-sm-3">
-            <h4>Side Effects</h4>
-            <p>Most medications have side effects, which can make it difficult to continue therapy.</p>
-            <div class="ml-2">
-              <h5>Services</h5>
+            <div class="">
+              <h5 class="solutions">Solutions</h5>
               <p>Talk with your pharmacist or doctor about managing side effects or finding a different drug.</p>
             </div>
           </div>
           <div class="col-sm-3">
-            <h4>Understanding</h4>
-            <p>Many medications are complex and take a long time to have a significant impact.</p>
-            <div class="ml-2">
-              <h5>Services</h5>
-              <p>Talk with your pharmacist to learn more about your treatments</p>
+            <div class="">
+              <h5 class="solutions">Solutions</h5>
+              <p>Talk with your pharmacist to learn more about your treatments.</p>
             </div>
           </div>
         </div>
@@ -133,8 +146,6 @@
     </div>
 
   </div>
-  <hr>
-  
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js" charset="utf-8"></script>
   <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>

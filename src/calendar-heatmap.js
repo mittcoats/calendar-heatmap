@@ -6,7 +6,7 @@ function calendarHeatmap() {
   var legendWidth = 200;
   var selector = 'body';
   var SQUARE_LENGTH = 15;
-  var SQUARE_PADDING = 2;
+  var SQUARE_PADDING = 3;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
   var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
@@ -163,6 +163,8 @@ function calendarHeatmap() {
         .attr('class', 'day-cell')
         .attr('width', SQUARE_LENGTH)
         .attr('height', SQUARE_LENGTH)
+        .attr('rx', 20)
+        .attr('ry', 20)
         .attr('fill', function(d,i) {
           // return (medGap(d) ? getGapColor(gapCountForDate(d)) : getColor(countForDate(d)))
           return (medGap(d) ? gapColor : coveredColor)
@@ -214,6 +216,8 @@ function calendarHeatmap() {
           .attr('height', SQUARE_LENGTH)
           .attr('x', width - legendWidth/2)
           .attr('y', height + SQUARE_PADDING)
+          .attr('rx', 20)
+          .attr('ry', 20)
           .attr('fill', function (d) { return gapColor; });
 
         gapLegendGroup.append('text')
@@ -230,6 +234,8 @@ function calendarHeatmap() {
           .attr('height', SQUARE_LENGTH)
           .attr('x', width - legendWidth)
           .attr('y', height + SQUARE_PADDING)
+          .attr('rx', 20)
+          .attr('ry', 20)
           .attr('fill', coveredColor);
 
         legendGroup.append('text')
